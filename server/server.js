@@ -1,39 +1,19 @@
-require('./config/config')
-const express = require('express')
-const bodyParser = require('body-parser')
-const app = express()
+require('./config/config');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const app = express();
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
  
 // parse application/json
 app.use(bodyParser.json())
- 
-app.get('/user', function (req, res) {
-  res.json('Get user')
-})
 
-app.post('/user', function (req, res) {
-    let user = req.body
+app.use(require('./routes/user'))
 
-    res.json({
-        user
-    })
-})
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
 
-app.put('/user/:id', function (req, res) {
-    let id = req.params.id
-
-    res.json({
-        id,
-        name: 'Daniel'
-    })
-})
-
-app.delete('/user', function (req, res) {
-    res.json('Delete user')
-})
- 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando en el puerto: ', process.env.PORT);
 })
