@@ -10,7 +10,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(require('./routes/user'))
+// Global settings of the routes
+app.use(require('./routes/index'))
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
 
