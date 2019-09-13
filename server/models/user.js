@@ -5,50 +5,89 @@ let validRoles = {
     values: ['ADMIN_ROLE', 'LEAGUE_ROLE', 'TEAM_ROLE', 'PLAYER_ROLE', 'REFEREE_ROLE'],
     message: '{VALUE} isn\'t valid role.'
 }
+let validSex = {
+    values: ['MALE', 'FEMALE'],
+    message: '{VALUE} isn\'t valid sex.'
+}
 let Schema = mongoose.Schema;
 let userSchema = new Schema({
     firstName: {
         type: String,
-        required: [true, 'First name is required']
+        required: [true, 'first_name_required']
     },
     lastName: {
         type: String,
-        required: [true, 'Last name is required']
+        required: [true, 'last_name_required']
     },
     email: {
         type: String,
         unique: true,
-        required: [true, 'Email is required']
-    },
-    nickname: {
-        type: String,
-        required: [true, 'Nickname is required']
-    },
-    password: {
-        type: String,
-        required: [true, 'Password is required']
+        required: [true, 'email_required']
     },
     role: {
         type: String,
-        required: [true, 'Role is required'],
+        required: [true, 'role_required'],
         default: 'PLAYER_ROLE',
         enum: validRoles
     },
+    nickname: {
+        type: String,
+        required: [true, 'nickname_required']
+    },
+    password: {
+        type: String,
+        required: [true, 'password_required']
+    },
+    confirm: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     birthday: {
         type: Date,
-        required: [true, 'Birthday is required']
+        required: false
     },
     telephone: {
         type: String,
         required: false
+        //TO DO: min length 10
     },
     sex: {
         type: String,
-        required: false
+        required: false,
+        enum: validSex
     },
     documentID: {
-        type: Number,
-        required: [true, 'ID is required']
+        type: String,
+        required: false
+    },
+    url: {
+        type: String,
+        required: [true, 'url_required']
+    },
+    accountStatus: {
+        type: Boolean,
+        required: [true, 'account_status_required']
+    },
+    google: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    facebook: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    withEmail: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    photo: {
+        type: String,
+        required: false,
+        default: 'url_photo'
     }
 })
 
