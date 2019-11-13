@@ -54,15 +54,16 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/sign-up', (req, res) => {
-    let body = req.body
+    let body = req.body;
     const emailRegexp = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const passRegexp = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/
+    const passRegexp = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
 
     if(!emailRegexp.test(body.email)){
         return res.status(400).json({
             ok: false,
             err: {
-                message: "invalid_email"
+                message: "invalid_email",
+                field: 'email'
             }
         })
     }
@@ -71,7 +72,8 @@ app.post('/sign-up', (req, res) => {
         return res.status(400).json({
             ok: false,
             err: {
-                message: "invalid_password"
+                message: "invalid_password",
+                field: 'password'
             }
         })
     }
@@ -89,7 +91,8 @@ app.post('/sign-up', (req, res) => {
                 ok: false,
                 err: {
                     message: "registered_user",
-                    registered_by: 'email'
+                    registered_by: 'email',
+                    field: 'email'
                 }
             })
         }
@@ -112,14 +115,6 @@ app.post('/sign-up', (req, res) => {
         })
 
         newUser.save((err, userDB) => {
-            const { _id, photo, role, url } = userDB;
-            const user = {
-                _id,
-                photo,
-                role,
-                url
-            }
-
             if(err){
                 return res.status(400).json({
                     ok: false,
@@ -127,6 +122,13 @@ app.post('/sign-up', (req, res) => {
                 })
             }
     
+            const { _id, photo, role, url } = userDB;
+            const user = {
+                _id,
+                photo,
+                role,
+                url
+            }
             let token = jwt.sign({
                 user
             }, process.env.SEED, { expiresIn: process.env.EXPIRATION_TOKEN })
